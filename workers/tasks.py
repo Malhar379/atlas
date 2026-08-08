@@ -32,6 +32,7 @@ def execute_run(run_id: int):
         plugin_result = {
             "message": "Example plugin executed successfully",
             "config": {},
+
         }
 
         # Save result
@@ -51,6 +52,25 @@ def execute_run(run_id: int):
             "status": run.status,
             "result": run.result,
         }
+
+    except Exception as exc:
+        db.rollback()
+
+        run = db.query(Run).filter(Run.id == run_id).first()
+
+        if run is not None:
+            run.status = transition_run(
+                RunStatus(run.status),
+                RunStatus.FAILED,
+            ).value
+
+            run.result = {
+                "error": str(exc),
+            }
+
+            db.commit()
+
+        raise
 
     finally:
         db.close()
