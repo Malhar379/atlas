@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 
-app = FastAPI(
-    title="Atlas",
-    description="A Containerized Computational Experimentation Platform",
-    version="1.0.0"
-)
+from api.routers.experiments import router as experiment_router
+from api.routers.runs import router as run_router
 
+app = FastAPI()
+
+app.include_router(experiment_router)
+app.include_router(run_router)
 
 @app.get("/")
 def root():
