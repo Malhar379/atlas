@@ -8,6 +8,7 @@ app = FastAPI()
 app.include_router(experiment_router)
 app.include_router(run_router)
 
+
 @app.get("/")
 def root():
     return {"message": "Atlas is running"}

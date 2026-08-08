@@ -1,5 +1,5 @@
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, JSON
 from core.execution.status import RunStatus
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 
@@ -48,3 +48,5 @@ class Run(Base):
         "Experiment",
         back_populates="runs"
     )
+
+    result = Column(JSON, nullable=True)
