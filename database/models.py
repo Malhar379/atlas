@@ -13,6 +13,7 @@ class Experiment(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(100), nullable=False)
     plugin = Column(String(100), nullable=False)
+    config = Column(JSON, nullable=False, default=dict)
 
     runs = relationship(
         "Run",
@@ -44,9 +45,25 @@ class Run(Base):
         nullable=False
     )
 
+    started_at = Column(
+        DateTime,
+        nullable=True
+    )
+
+    completed_at = Column(
+        DateTime,
+        nullable=True
+    )
+
     experiment = relationship(
         "Experiment",
         back_populates="runs"
     )
 
     result = Column(JSON, nullable=True)
+
+    metrics = Column(JSON, nullable=True)
+
+    config = Column(JSON, nullable=True)
+
+    artifacts = Column(JSON, nullable=True)

@@ -1,9 +1,5 @@
+from pydantic import BaseModel, computed_field
 from datetime import datetime
-
-from pydantic import BaseModel
-
-from core.execution.status import RunStatus
-
 from typing import Any
 
 class RunCreate(BaseModel):
@@ -15,15 +11,25 @@ class RunResponse(BaseModel):
     experiment_id: int
     status: str
     created_at: datetime
+    started_at: datetime | None = None
+    completed_at: datetime | None = None
+    result: dict | None = None
+    metrics: dict | None = None
+    config: dict | None
+    artifacts: dict[str, Any] | None = None
 
-    class Config:
-        from_attributes = True
+    @computed_field
+    @property
+    def duration_seconds(self) -> float | None:
+        if self.started_at is None or self.completed_at is None:
+            return None
 
-from typing import Any
+        return (self.completed_at - self.started_at).total_seconds()
 
-class RunResponse(BaseModel):
-    id: int
-    experiment_id: int
-    status: RunStatus
-    created_at: datetime
-    result: Any | None = None
+    model_config = {
+        "from_attributes": True
+    }
+
+class RunComparisonResponse(BaseModel):
+    run_1: RunResponse
+    run_2: RunResponse

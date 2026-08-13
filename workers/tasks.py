@@ -1,4 +1,6 @@
+from plugins.registry import get_plugin
 from workers.celery_app import celery_app
+from datetime import datetime
 
 from database.connection import SessionLocal
 from database.models import Run
@@ -23,20 +25,23 @@ def execute_run(run_id: int):
             RunStatus.RUNNING,
         ).value
 
+        run.started_at = datetime.utcnow()
+
         db.commit()
         db.refresh(run)
 
         print(f"Executing run {run_id}")
+    
+        plugin = get_plugin(run.experiment.plugin)
 
-        # Temporary plugin execution
-        plugin_result = {
-            "message": "Example plugin executed successfully",
-            "config": {},
+        plugin_output = plugin.execute(run.experiment.config)
 
-        }
+        run.result = plugin_output["result"]
+        run.metrics = plugin_output["metrics"]
+        run.artifacts = plugin_output["artifacts"]
 
-        # Save result
-        run.result = plugin_result
+        run.completed_at = datetime.utcnow()
+
 
         # RUNNING -> COMPLETED
         run.status = transition_run(
@@ -63,6 +68,8 @@ def execute_run(run_id: int):
                 RunStatus(run.status),
                 RunStatus.FAILED,
             ).value
+
+            run.completed_at = datetime.utcnow()
 
             run.result = {
                 "error": str(exc),

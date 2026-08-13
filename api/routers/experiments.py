@@ -27,6 +27,7 @@ def create_experiment(
     db_experiment = Experiment(
         name=experiment.name,
         plugin=experiment.plugin,
+        config=experiment.config
     )
 
     db.add(db_experiment)
@@ -81,6 +82,7 @@ def update_experiment(
 
     experiment.name = updated_experiment.name
     experiment.plugin = updated_experiment.plugin
+    experiment.config = updated_experiment.config
 
     db.commit()
     db.refresh(experiment)
@@ -108,3 +110,4 @@ def delete_experiment(
     db.commit()
 
     return {"message": "Experiment deleted successfully"}
+
