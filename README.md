@@ -1,4 +1,4 @@
-````markdown
+
 # Atlas
 
 A modular backend platform for defining, executing, tracking, comparing, and reproducing computational experiments through a unified API.
