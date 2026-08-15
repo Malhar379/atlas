@@ -368,13 +368,13 @@ The test suite covers:
 
 # Engineering Highlights
 
-- **Modular execution** — workload-specific logic is isolated behind plugins.
-- **Asynchronous processing** — long-running work is separated from API requests through Celery.
-- **Explicit state management** — Run lifecycle transitions are validated rather than handled as arbitrary status updates.
-- **Reproducibility** — configuration, results, metrics, artifacts, and execution metadata are retained for each Run.
-- **Persistence** — experiments and their execution history are stored in PostgreSQL.
-- **Extensibility** — new experiment types can be introduced through the plugin system without restructuring the core execution pipeline.
-- **Testability** — core lifecycle and execution behavior is covered by automated tests.
+- **Modular execution** - workload-specific logic is isolated behind plugins.
+- **Asynchronous processing** - long-running work is separated from API requests through Celery.
+- **Explicit state management** - Run lifecycle transitions are validated rather than handled as arbitrary status updates.
+- **Reproducibility** - configuration, results, metrics, artifacts, and execution metadata are retained for each Run.
+- **Persistence** - experiments and their execution history are stored in PostgreSQL.
+- **Extensibility** - new experiment types can be introduced through the plugin system without restructuring the core execution pipeline.
+- **Testability** - core lifecycle and execution behavior is covered by automated tests.
 
 ---
 
