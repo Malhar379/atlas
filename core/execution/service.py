@@ -5,6 +5,22 @@ from core.execution.status import RunStatus
 from plugins.registry import get_plugin
 from database.models import Run
 
+def update_run_status(
+    run,
+    new_status: RunStatus,
+    db: Session,
+):
+    new_status = transition_run(
+        RunStatus(run.status),
+        new_status,
+    )
+
+    run.status = new_status.value
+
+    db.commit()
+    db.refresh(run)
+
+    return run
 
 def execute_run(db: Session, run_id: int):
     run = db.query(Run).filter(Run.id == run_id).first()
