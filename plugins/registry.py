@@ -1,8 +1,10 @@
 from plugins.example import ExamplePlugin
+from plugins.sklearn_regression import SklearnRegressionPlugin
 
 
 PLUGIN_REGISTRY = {
     "example": ExamplePlugin,
+    "sklearn_regression": SklearnRegressionPlugin,
 }
 
 
